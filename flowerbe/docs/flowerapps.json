@@ -1,0 +1,153 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API Documentation for Flower Apps",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/register": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Register a new user",
+        "requestBody": {
+          "description": "User registration data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "example": {
+                "username": "ahmadzulfadli",
+                "email": "ahmadzulfadli@gmail.com",
+                "password": "strongpassword123"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Registration successful",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "success",
+                  "message": "Success Create User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Registration failed",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "failed",
+                  "message": "Failed Create User"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Registration failed",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "failed",
+                  "message": "Failed Create User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "User login",
+        "requestBody": {
+          "description": "User login data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "example": {
+                "username": "ahmadzulfadli",
+                "password": "strongpassword123"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "success",
+                  "message": "Login successful",
+                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Login failed",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "failed",
+                  "message": "Login failed. username or password cannot be null."
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Login failed",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "failed",
+                  "message": "Login failed. Please check your username and password."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/logout": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "User logout",
+        "responses": {
+          "200": {
+            "description": "Logout successful",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "success",
+                  "message": "Logout successful"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Logout failed",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "failed",
+                  "message": "Logout failed. User not authenticated."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
