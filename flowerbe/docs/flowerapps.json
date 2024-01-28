@@ -4,56 +4,374 @@
     "title": "API Documentation for Flower Apps",
     "version": "1.0.0"
   },
+  "servers": [
+    {
+      "url": "http://{environment}.flowerapp.com/api/v1",
+      "description": "Local server",
+      "variables": {
+        "environment": {
+          "default": "dev",
+          "description": "Environment variable",
+          "enum": [
+            "dev",
+            "staging",
+            "production"
+          ]
+        }
+      }
+    }
+  ],
   "paths": {
-    "/register": {
+    "/users": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get a list of users",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token for authentication",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size per page",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sort by column",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "Sort order",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Search by column",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "success",
+                  "message": "Get Users Success",
+                  "data": [
+                    {
+                      "id": 1,
+                      "email": "john.doe@example.com",
+                      "password": "hashedpassword"
+                    },
+                    {
+                      "id": 2,
+                      "email": "jane.smith@example.com",
+                      "password": "hashedpassword"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "success",
+                  "message": "No Content",
+                  "data": []
+                }
+              }
+            }
+          }
+        }
+      },
       "post": {
         "tags": [
-          "Auth"
+          "Users"
         ],
-        "summary": "Register a new user",
+        "summary": "Create a new user",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token for authentication",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
-          "description": "User registration data",
+          "description": "User data",
           "required": true,
           "content": {
             "application/json": {
               "example": {
-                "username": "ahmadzulfadli",
-                "email": "ahmadzulfadli@gmail.com",
-                "password": "strongpassword123"
+                "biodata": {
+                  "fullname": "New User",
+                  "mobilePhone": "081234567890",
+                  "imagePath": "/uploads/images/1234567890.jpg"
+                },
+                "users":{
+                  "biodataId": 1,
+                  "roleId": 1,
+                  "email": "newuser@gmail.com",
+                  "password": "newuserpassword"
+                }
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": "Registration successful",
+            "description": "User created successfully",
             "content": {
               "application/json": {
                 "example": {
                   "status": "success",
-                  "message": "Success Create User"
+                  "message": "Create User Success",
+                  "data": {
+                    "id": 3,
+                    "fullname": "newuser",
+                    "email": "newuser@example.com",
+                    "password": "hashednewuserpassword"
+                  }
                 }
               }
             }
           },
           "400": {
-            "description": "Registration failed",
+            "description": "User creation failed",
             "content": {
               "application/json": {
                 "example": {
                   "status": "failed",
-                  "message": "Failed Create User"
+                  "message": "Bad Request, email or password cannot be null",
+                  "data": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get details of a specific user",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token for authentication",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "success",
+                  "message": "Success Get User",
+                  "data": {
+                    "users": {
+                      "id": 1,
+                      "biodataId": 1,
+                      "roleId": 1,
+                      "email": "newuser@gmail.com",
+                      "password": "newuserpassword",
+                      "userBiodata": {
+                        "id": 1,
+                      "fullname": "New User",
+                      "mobilePhone": "081234567890",
+                      "imagePath": "/uploads/images/1234567890.jpg"
+                      }
+                    }
+                  }
                 }
               }
             }
           },
-          "401": {
-            "description": "Registration failed",
+          "204": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "success",
+                  "message": "No Content",
+                  "data": {}
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Update details of a specific user",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token for authentication",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Updated user data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "example": {
+                "username": "newusername",
+                "email": "john.doe@example.com",
+                "password": "newhashedpassword"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User updated successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "success",
+                  "message": "Update User Success",
+                  "data": {
+                    "id": 1,
+                    "username": "newusername",
+                    "email": "john.doe@example.com",
+                    "password": "newhashedpassword"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User updated failed",
             "content": {
               "application/json": {
                 "example": {
                   "status": "failed",
-                  "message": "Failed Create User"
+                  "message": "Update User Failed",
+                  "data": {}
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Delete a specific user",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token for authentication",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "User deleted successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "success",
+                  "message": "Delete User Success",
+                  "data": {}
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User deleted failed",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "failed",
+                  "message": "User Was Not Found, Delete User Failed",
+                  "data": {}
                 }
               }
             }
@@ -98,7 +416,8 @@
               "application/json": {
                 "example": {
                   "status": "failed",
-                  "message": "Login failed. username or password cannot be null."
+                  "message": "Login failed. username or password cannot be null.",
+                  "token": ""
                 }
               }
             }
@@ -109,7 +428,8 @@
               "application/json": {
                 "example": {
                   "status": "failed",
-                  "message": "Login failed. Please check your username and password."
+                  "message": "Login failed. Please check your username and password.",
+                  "token": ""
                 }
               }
             }
@@ -122,6 +442,17 @@
         "tags": [
           "Auth"
         ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token for authentication",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "summary": "User logout",
         "responses": {
           "200": {
@@ -130,7 +461,8 @@
               "application/json": {
                 "example": {
                   "status": "success",
-                  "message": "Logout successful"
+                  "message": "Logout successful",
+                  "token": ""
                 }
               }
             }
@@ -141,10 +473,337 @@
               "application/json": {
                 "example": {
                   "status": "failed",
-                  "message": "Logout failed. User not authenticated."
+                  "message": "Logout failed. User not authenticated.",
+                  "token": ""
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/products": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Get a list of products",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "name": "Rose",
+                    "price": 10.99,
+                    "stock": 100
+                  },
+                  {
+                    "id": 2,
+                    "name": "Tulip",
+                    "price": 8.99,
+                    "stock": 50
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Create a new product",
+        "requestBody": {
+          "description": "Product data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "example": {
+                "name": "Sunflower",
+                "price": 12.99,
+                "stock": 75
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Product created successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 3,
+                  "name": "Sunflower",
+                  "price": 12.99,
+                  "stock": 75
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/{id}": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Get details of a specific product",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "name": "Rose",
+                  "price": 10.99,
+                  "stock": 100
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Update details of a specific product",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Updated product data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "example": {
+                "name": "Rose",
+                "price": 11.99,
+                "stock": 95
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Product updated successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "name": "Rose",
+                  "price": 11.99,
+                  "stock": 95
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Delete a specific product",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Product deleted successfully"
+          }
+        }
+      }
+    },
+    "/orders": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Get a list of orders",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "order_code": "ORD123",
+                    "status": "Processing",
+                    "order_date": "2024-02-01"
+                  },
+                  {
+                    "id": 2,
+                    "order_code": "ORD456",
+                    "status": "Shipped",
+                    "order_date": "2024-02-02"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Create a new order",
+        "requestBody": {
+          "description": "Order data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "example": {
+                "order_code": "ORD789",
+                "status": "Processing",
+                "order_date": "2024-02-03"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Order created successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 3,
+                  "order_code": "ORD789",
+                  "status": "Processing",
+                  "order_date": "2024-02-03"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Get details of a specific order",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "order_code": "ORD123",
+                  "status": "Processing",
+                  "order_date": "2024-02-01"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Update details of a specific order",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Updated order data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "example": {
+                "order_code": "ORD123",
+                "status": "Shipped",
+                "order_date": "2024-02-01"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Order updated successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "order_code": "ORD123",
+                  "status": "Shipped",
+                  "order_date": "2024-02-01"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Delete a specific order",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Order deleted successfully"
           }
         }
       }
