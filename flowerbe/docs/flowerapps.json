@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "http://{environment}.flowerapp.com/api/v1",
+      "url": "http://localhost:8000/api/v1",
       "description": "Local server",
       "variables": {
         "environment": {
@@ -95,13 +95,29 @@
                   "data": [
                     {
                       "id": 1,
-                      "email": "john.doe@example.com",
-                      "password": "hashedpassword"
+                      "biodataId": 1,
+                      "roleId": 1,
+                      "email": "newuser@gmail.com",
+                      "password": "newuserpassword",
+                      "userBiodata": {
+                        "id": 1,
+                        "fullname": "New User",
+                        "mobilePhone": "081234567890",
+                        "imagePath": "/uploads/images/1234567890.jpg"
+                      }
                     },
                     {
                       "id": 2,
-                      "email": "jane.smith@example.com",
-                      "password": "hashedpassword"
+                      "biodataId": 2,
+                      "roleId": 2,
+                      "email": "newuser@gmail.com",
+                      "password": "newuserpassword",
+                      "userBiodata": {
+                        "id": 2,
+                        "fullname": "New User",
+                        "mobilePhone": "081234567890",
+                        "imagePath": "/uploads/images/1234567890.jpg"
+                      }
                     }
                   ]
                 }
@@ -127,17 +143,6 @@
           "Users"
         ],
         "summary": "Create a new user",
-        "parameters": [
-          {
-            "name": "token",
-            "in": "header",
-            "description": "Token for authentication",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "requestBody": {
           "description": "User data",
           "required": true,
@@ -149,7 +154,7 @@
                   "mobilePhone": "081234567890",
                   "imagePath": "/uploads/images/1234567890.jpg"
                 },
-                "users":{
+                "users": {
                   "biodataId": 1,
                   "roleId": 1,
                   "email": "newuser@gmail.com",
@@ -161,17 +166,24 @@
         },
         "responses": {
           "201": {
-            "description": "User created successfully",
+            "description": "User Created Successfully",
             "content": {
               "application/json": {
                 "example": {
                   "status": "success",
-                  "message": "Create User Success",
+                  "message": "Success Created User",
                   "data": {
-                    "id": 3,
-                    "fullname": "newuser",
-                    "email": "newuser@example.com",
-                    "password": "hashednewuserpassword"
+                    "id": 1,
+                    "biodataId": 1,
+                    "roleId": 1,
+                    "email": "newuser@gmail.com",
+                    "password": "newuserpassword",
+                    "userBiodata": {
+                      "id": 1,
+                      "fullname": "New User",
+                      "mobilePhone": "081234567890",
+                      "imagePath": "/uploads/images/1234567890.jpg"
+                    }
                   }
                 }
               }
@@ -226,18 +238,16 @@
                   "status": "success",
                   "message": "Success Get User",
                   "data": {
-                    "users": {
+                    "id": 1,
+                    "biodataId": 1,
+                    "roleId": 1,
+                    "email": "newuser@gmail.com",
+                    "password": "newuserpassword",
+                    "userBiodata": {
                       "id": 1,
-                      "biodataId": 1,
-                      "roleId": 1,
-                      "email": "newuser@gmail.com",
-                      "password": "newuserpassword",
-                      "userBiodata": {
-                        "id": 1,
                       "fullname": "New User",
                       "mobilePhone": "081234567890",
                       "imagePath": "/uploads/images/1234567890.jpg"
-                      }
                     }
                   }
                 }
@@ -288,26 +298,41 @@
           "content": {
             "application/json": {
               "example": {
-                "username": "newusername",
-                "email": "john.doe@example.com",
-                "password": "newhashedpassword"
+                "biodata": {
+                  "fullname": "Update User",
+                  "mobilePhone": "081234567890",
+                  "imagePath": "/uploads/images/1234567890.jpg"
+                },
+                "users": {
+                  "biodataId": 1,
+                  "roleId": 1,
+                  "email": "updateuser@gmail.com",
+                  "password": "newuserpassword"
+                }
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "User updated successfully",
+            "description": "Update User Successfully",
             "content": {
               "application/json": {
                 "example": {
                   "status": "success",
-                  "message": "Update User Success",
+                  "message": "Success Update User",
                   "data": {
                     "id": 1,
-                    "username": "newusername",
-                    "email": "john.doe@example.com",
-                    "password": "newhashedpassword"
+                    "biodataId": 1,
+                    "roleId": 1,
+                    "email": "updateuser@gmail.com",
+                    "password": "newuserpassword",
+                    "userBiodata": {
+                      "id": 1,
+                      "fullname": "Update User",
+                      "mobilePhone": "081234567890",
+                      "imagePath": "/uploads/images/1234567890.jpg"
+                    }
                   }
                 }
               }

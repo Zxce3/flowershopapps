@@ -41,9 +41,9 @@ public class User {
     @Column(name = "role_id")
     private Long roleId;
 
-    @Column(name = "created_by", nullable=false)
+    @Column(name = "created_by")
 	private Long createdBy;
-	@Column(name = "created_on", nullable=false)
+	@Column(name = "created_on")
 	private Date createdOn;
 	@Column(name = "modified_by")
 	private Long modifiedBy;
